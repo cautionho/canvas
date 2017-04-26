@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<canvas id="canvas" width="300" height="300" style="border: 2px solid #000;"></canvas>
+		
+		
+		<script>
+			
+			//获取canvas对象
+			var canvas = document.getElementById('canvas');
+			
+			
+			//获取2d绘制环境
+			var context = canvas.getContext('2d');
+			
+			//准备画布和颜料
+			
+			//设置画笔的颜色
+//			context.fillStyle = 'yellow';
+			
+			//设定要添加到画布中的文字样式
+//			context.font = '20px 微软雅黑';
+			
+			//文字对齐方式
+//			context.textBaseline = 'top';
+			
+			//设置画笔的填充
+//			context.fillText('我是你的',200,10);
+			
+			//描边的颜色
+//			context.strokeStyle = 'red';
+			
+			//设置描边文字
+//			context.strokeText('你是我的',10,20);
+			
+			
+			//告诉对象 开始绘制路径
+//			context.beginPath();
+//			
+//			//指定颜色
+//			context.strokeStyle = '#000';
+//			
+//			//移动画笔 从这里开始
+//			context.moveTo(0,0);
+//			
+//			//确定终止位置 并跟开始的位置链接
+//			context.lineTo(150,150);
+//			
+//			//给出绘制指令
+//			context.stroke();
+//			
+//			//给出结束指令  关闭路径
+//			context.closePath();
+//			
+//			
+//			//第二条线
+//			context.beginPath();
+//			
+//			context.strokeStyle = '#000';
+//			
+//			context.moveTo(150,150);
+//			
+//			context.lineTo(150,0);
+//			
+//			context.stroke();
+//			
+//			context.closePath();
+
+			//左边三角形
+			context.fillStyle = 'darkcyan';
+			
+			context.strokeStyle = '#000';
+			
+			context.beginPath();
+			
+			context.moveTo(0,0);
+			
+			context.lineTo(150,150);
+			
+			context.lineTo(0,300);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//上面三角形
+			context.fillStyle = 'greenyellow';
+			
+			context.beginPath();
+			
+			context.moveTo(0,0);
+			
+			context.lineTo(150,150);
+			
+			context.lineTo(300,0);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//中间小三角形
+			context.fillStyle = 'yellow';
+			
+			context.beginPath();
+			
+			context.moveTo(150,150);
+			
+			context.lineTo(225,75);
+			
+			context.lineTo(225,225);
+			
+			context.lineTo(150,150);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//右边平行四边形
+			context.fillStyle = 'crimson';
+			
+			context.beginPath();
+			
+			context.moveTo(225,75);
+			
+			context.lineTo(300,0);
+			
+			context.lineTo(300,150);
+			
+			context.lineTo(225,225);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//左下角三角形
+			context.fillStyle = 'palevioletred';
+			
+			context.beginPath();
+			
+			context.moveTo(0,300);
+			
+			context.lineTo(150,300);
+			
+			context.lineTo(75,225);
+			
+			context.lineTo(0,300);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//菱形
+			context.fillStyle = 'purple';
+			
+			context.beginPath();
+			
+			context.moveTo(150,150);
+			
+			context.lineTo(75,225);
+			
+			context.lineTo(150,300);
+			
+			context.lineTo(225,225);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+			//右下角三角形
+			context.fillStyle = '#fc1';
+			
+			context.beginPath();
+			
+			context.moveTo(300,300);
+			
+			context.lineTo(300,150);
+			
+			context.lineTo(150,300);
+			
+			context.lineTo(300,300);
+			
+			context.stroke();
+			
+			context.closePath();
+			
+			context.fill();
+			
+		</script>
+		
+	</body>
+</html>

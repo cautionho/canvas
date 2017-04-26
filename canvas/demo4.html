@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>随机抽奖</title>
+		
+		<style>
+			
+			body{
+				text-align: center;
+			}
+			
+			.area{
+				/*display: flex;*/
+				background: rgb(220,0,0);
+				width: 800px;
+				height: 400px;
+				margin: 0 auto;
+				border-radius: 5px;
+			}
+			
+			#canvas{
+				background: #fff;
+				display: block;
+				/*margin: auto;*/
+				margin: 0 auto;
+			}
+			
+		</style>
+		
+		<script src="js/windowToCanvas.js"></script>
+	</head>
+	<body>
+		<h1>刮奖区</h1>
+		<div class="area">
+			<canvas id="text" width="800px" height="300px"></canvas>
+			<canvas id="canvas" width="400" height="50"></canvas>
+		</div>
+		
+		
+		<script>
+			
+			//刮奖卡文字
+			context1 = document.getElementById('text').getContext('2d');
+			
+			context1.font = '60px 微软雅黑';
+
+			context1.fillStyle = 'yellow';
+			
+			context1.rotate(-Math.PI/180*30);
+			
+			context1.fillText('刮',150,250);
+
+			context1.rotate(Math.PI/180*30);
+			
+			context1.fillText('刮',370,60);
+			
+			context1.rotate(Math.PI/180*30);
+			
+			context1.fillText('乐',490,-150);
+			
+			context1.beginPath();
+			
+			context1.lineWidth = 10;
+			
+			context1.rotate(-Math.PI/180*30);
+			
+			context1.fillStyle = 'rgb(220,0,0)';
+			
+			context1.strokeStyle = 'yellow';
+			
+			context1.arc(300,220,40,0,Math.PI*2,false);
+			
+			context1.stroke();
+			
+			context1.beginPath();
+			
+			context1.arc(350,230,30,0,Math.PI*2,false);
+			
+			context1.stroke();
+			
+			context1.fill();
+			
+			context1.beginPath();
+			
+			context1.arc(500,220,40,0,Math.PI*2,false);
+			
+			context1.stroke();
+			
+			context1.beginPath();
+			
+			context1.arc(450,230,30,0,Math.PI*2,false);
+			
+			context1.stroke();
+			
+			context1.fill();
+			
+			//保存已绘制的图
+			context1.save();
+			
+			context1.beginPath();
+			
+			for(var i=0;i<10;i++){
+				
+				context1.fillStyle = 'yellow';
+				
+				context1.translate(0,i*10);
+				
+				context1.fillRect(0,10,20,20);
+				
+				context1.fillRect(text.width-20,10,text.width-20,20);
+			}
+			
+			//刮奖区
+			
+			var canvas = document.getElementById('canvas');
+			
+			var context = canvas.getContext('2d');
+			
+			//初始化画布
+			context.fillStyle = '#ccc';
+			
+			context.fillRect(0,0,canvas.width,canvas.height);
+			
+			var arr = ['一等奖','二等奖','三等奖','谢谢惠顾'];
+			
+			context.fillStyle = '#000';
+			
+			context.font = '30px 微软雅黑'
+			
+			context.textBaseline = 'hanging';
+			
+			var randomIndex = Math.floor(Math.random()*arr.length);
+			
+			context.fillText('刮奖区',(canvas.width/2.5),10);
+
+			//按下开始画
+			canvas.addEventListener('mousedown',beginDraw,false);
+			
+			//移动继续画
+			canvas.addEventListener('mousemove',draw,false);
+			
+			//抬起不画
+			canvas.addEventListener('mouseup',stopDraw,false);
+			
+			//鼠标初始位置
+			var mousePos;
+			
+			//初始化刮奖线宽
+			var lineWidth = 5;
+			
+			//初始化刮奖颜色
+			var color = '#fff';
+			
+			//标志位初始化
+			var flag = false;
+			
+			function beginDraw(e){
+				
+				var ev = e || window.event;
+				
+				flag = true;
+
+				mousePos = windowToCanvas(canvas,ev.clientX,ev.clientY);
+				
+				mX = mousePos.x;
+				
+				mY = mousePos.y;
+				
+			}
+			
+			function draw(e){
+				
+				var ev = e || window.event;
+
+				if(flag){
+					
+					context.save();
+					
+					var local = windowToCanvas(canvas,ev.clientX,ev.clientY);
+
+					//获取当前鼠标位置
+					var nowX = local.x;
+					
+					var nowY = local.y;
+					
+					context.fillStyle = color;
+					
+					context.lineWidth = lineWidth;
+					
+					context.beginPath();
+					
+					context.arc(nowX,nowY,10,0,Math.PI*2,false);
+					
+					context.clip();
+					
+//					context.fill();
+					context.clearRect(0,0,canvas.width,canvas.height);
+	
+					mX = nowX;
+					
+					mY = nowY;
+					
+					context.fillStyle = '#000'
+					
+					context.fillText(arr[randomIndex],(canvas.width/2.5),10);
+					
+					context.restore();
+					
+					
+				}
+				
+			}
+			
+			function stopDraw(){
+				
+				flag = false;
+				
+			}
+			
+			
+			
+			
+		</script>
+		
+	</body>
+</html>

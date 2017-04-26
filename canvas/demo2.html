@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<canvas id="canvas" width="300" height="300" style="border: 1px solid #000;"></canvas>
+		
+		
+		<script>
+			
+			var canvas = document.getElementById('canvas');
+			
+			var context = canvas.getContext('2d');
+			
+			//对象 颜色 开始坐标 结束坐标 线宽 帽沿
+			strokeLine(context,'pink',50,50,150,50,3,'round');
+			
+			strokeLine(context,'pink',150,50,150,25,3,'round');
+			
+			strokeLine(context,'pink',150,25,250,60,3,'round');
+			
+			strokeLine(context,'pink',250,60,150,100,3,'round');
+			
+			strokeLine(context,'pink',150,100,150,75,3,'round');
+			
+			strokeLine(context,'pink',150,75,50,75,3,'round');
+			
+			strokeLine(context,'pink',50,75,50,50,3,'round');
+
+			//第一个箭头
+			strokeLine(context,'#f00',50,150,100,200,5,'round');
+			
+			strokeLine(context,'#f00',100,200,50,250,5,'round');
+			
+			//第二个箭头
+			strokeLine(context,'yellow',120,150,170,200,5,'round');
+			
+			strokeLine(context,'yellow',170,200,120,250,5,'round');
+			
+			//第三个箭头
+			strokeLine(context,'green',190,150,240,200,5,'round');
+			
+			strokeLine(context,'green',240,200,190,250,5,'round');
+
+			//封装
+			function strokeLine(objContext,color,beginX,beginY,endX,endY,lineWidth,lineCap){
+				
+				//初始化
+				objContext.lineWidth = '1';
+				
+				objContext.lineCap = 'none';
+				
+				//有传参则取值 否则取初始化值
+				if(lineCap != 'undefined'){
+					
+					objContext.lineCap = lineCap;
+					
+				}else{
+					
+					return;
+				}
+				
+				if(lineWidth != 'undefined'){
+					
+					objContext.lineWidth = lineWidth;
+					
+				}else{
+					
+					return;
+				}
+				
+				objContext.strokeStyle = color || '#000';//默认黑色
+				
+				objContext.beginPath();
+				
+				objContext.moveTo(beginX || 0 , beginY || 0);
+				
+				objContext.lineTo(endX || 0 , endY || 0);
+				
+				objContext.stroke();
+				
+				objContext.closePath();
+				
+			}
+			
+		</script>
+	</body>
+</html>

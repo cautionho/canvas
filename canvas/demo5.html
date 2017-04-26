@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>黑板</title>
+
+		<script src="js/jquery2.2.2.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+
+		<script src="js/bootstrap.js"></script>
+		<script src="js/windowToCanvas.js"></script>
+
+		<style>
+			.container {
+				width: 800px;
+				height: 500px;
+				/*border: 1px solid red;*/
+				margin: 50px auto;
+			}
+
+			.board-style {
+				width: 12%;
+				height: 498px;
+				float: left;
+				overflow: hidden;
+				padding: 0;
+				/*border: 1px solid #000;*/
+				padding-right: 10px;
+			}
+
+			#dLabel {
+				height: 24px;
+				width: 100%;
+				line-height: 100%;
+			}
+
+			#canvas {
+				background: #1F2827;
+				border: 10px solid #666;
+				border-bottom: 20px solid #444;
+			}
+
+			.board-style h2{
+				text-align: center;
+				font-size: 18px;
+				line-height: 30px;
+			}
+
+			.board-style li{
+				list-style: none;
+				margin: 10px 0;
+				text-align: center;
+				border: 1px solid #abc;
+				padding: 5px;
+				border-radius: 5px;
+				background: #abc;
+				cursor: pointer;
+			}
+
+			.board-style input{
+				display: block;
+				margin: 0 auto;
+				width: 100%;
+				padding: 2px;
+				height: 35px;
+
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class="container">
+			<div class="board-style">
+				<h2>笔头大小</h2>
+				<li onclick="lineWidth = 4">*4</li>
+				<li onclick="lineWidth = 6">*6</li>
+				<h2>绘制图形</h2>
+				<li onclick="inner = 1">曲线</li>
+				<li onclick="inner = 2">直线</li>
+				<li onclick="inner = 3">矩形</li>
+				<li onclick="inner = 4">圆形</li>
+				<h2>边框颜色</h2>
+				<input type="color" id="strokeColor" />
+				<h2>填充颜色</h2>
+				<input type="color" id="fillColor" />
+			</div>
+			<canvas id="canvas" height="470" width="650"></canvas>
+
+		</div>
+
+		<script>
+			var canvas = document.getElementById('canvas');
+
+			var context = canvas.getContext('2d');
+
+			//获取边框颜色选择器
+			var strokeStyle = document.getElementById('strokeColor');
+
+			//获取填充颜色选择器
+			var fillStyle = document.getElementById("fillColor");
+
+			//初始化画板
+			context.fillStyle = '#1F2827';
+			context.fillRect(0, 0, canvas.width, canvas.height);
+
+			context.save();
+
+			//定义初始样式
+			var lineWidth = 3;
+
+			var strokeColor = '#fff';
+
+			strokeStyle.onchange = function() {
+				strokeColor = this.value;
+			}
+
+			var fillColor = '#fff';
+
+			fillStyle.onchange = function() {
+				fillColor = this.value;
+			}
+
+			var lineCap = 'round';
+
+			//定义标志位
+			flag = false;
+
+			//定义画哪种图形
+			inner = 1;
+
+			//是否清楚上一次画布的标志位
+			isclear = true;
+
+			//绑定事件
+			canvas.addEventListener('mousedown', beginDraw, false);
+
+			canvas.addEventListener('mousemove', draw, false);
+
+			canvas.addEventListener('mouseup', stopDraw, false);
+
+			var imgData = context.getImageData(0,0,canvas.width,canvas.height);
+
+			function beginDraw(e) {
+
+				var ev = e || window.event;
+
+				flag = true;
+
+				begin = windowToCanvas(canvas, ev.clientX, ev.clientY);
+
+				beginX = begin.x;
+
+				beginY = begin.y;
+
+//				context.fillStyle = '#1F2827';
+//				context.fillRect(0, 0, canvas.width, canvas.height);
+
+				context.restore();
+			}
+
+			function draw(e) {
+
+				var ev = e || window.event;
+
+				now = windowToCanvas(canvas, ev.clientX, ev.clientY);
+
+				nowX = now.x;
+
+				nowY = now.y;
+
+				if(flag) {
+
+					//样式
+					context.fillStyle = fillColor;
+
+					context.strokeStyle = strokeColor;
+
+					context.lineWidth = lineWidth;
+
+					context.lineCap = lineCap;
+
+					switch(inner) {
+						case 1:
+
+							context.beginPath();
+
+							context.moveTo(beginX, beginY);
+
+							context.lineTo(nowX, nowY);
+
+							context.stroke();
+
+							context.closePath();
+
+							beginX = nowX;
+							beginY = nowY;
+
+							break;
+
+						case 2:
+
+							context.clearRect(0, 0, canvas.width, canvas.height);
+							context.putImageData(imgData,0,0);
+
+							context.beginPath();
+
+							context.moveTo(beginX, beginY);
+							context.lineTo(nowX, nowY);
+
+							context.stroke();
+
+							context.closePath();
+
+							break;
+
+						case 3:
+							context.clearRect(0, 0, canvas.width, canvas.height);
+							context.putImageData(imgData,0,0);
+
+							context.beginPath();
+
+							context.rect(beginX, beginY, nowX / 2, nowY / 2);
+
+							context.fill()
+
+							context.stroke();
+
+							context.closePath();
+
+							break;
+
+						case 4:
+
+							context.clearRect(0, 0, canvas.width, canvas.height);
+							context.putImageData(imgData,0,0);
+							context.beginPath();
+
+							context.arc(beginX, beginY, Math.abs(beginX - nowX), 0, Math.PI * 2, false);
+
+							context.fill()
+
+							context.stroke();
+							context.closePath();
+
+							break;
+					}
+
+				}
+
+			}
+
+			function stopDraw() {
+//				context.getImageData(0,0,canvas.width,canvas.height);
+				imgData=context.getImageData(0,0,canvas.width,canvas.height);
+//				context.clearRect(0, 0, canvas.width, canvas.height);
+				context.putImageData(imgData,0,0);
+				context.save();
+				flag = false;
+			}
+		</script>
+
+	</body>
+
+</html>

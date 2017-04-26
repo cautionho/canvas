@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				text-align: center;
+			}
+			
+			#canvas{
+				background: #ddd;
+			}
+			
+		</style>
+	</head>
+	<body>
+		
+		<canvas id="canvas" width="600" height="400"></canvas>
+		<br />
+		<button onclick="start()">开始</button>
+		<button onclick="pause()">暂停</button>
+		<button onclick="zero()">归零</button>
+		
+		<script>
+			
+			var context = document.getElementById('canvas').getContext('2d');
+			
+			function clock(context){
+				
+				this.context = context;
+				
+				this.init();
+				
+			}
+			
+			clock.prototype = {
+				
+				//初始化秒表样式
+				init : function(){
+					
+					context.clearRect(0,0,canvas.width,canvas.height);
+					
+					//初始化秒表样式
+					context.strokeStyle = '#494949';
+					
+					context.lineWidth = 30;
+					
+					context.beginPath();
+					
+					context.strokeRect(100,100,400,200);
+					
+					context.font = '80px 微软雅黑'
+					
+					context.fillText('00:00:00',140,220);
+					
+					context.save();
+					
+				},
+				
+				drawTime : function(m,s,ms){
+					
+					context.clearRect(115,115,370,170);
+					
+					context.font = '80px 微软雅黑';
+//					
+					context.fillText(m+':'+s+':'+ms,140,220);
+					
+				}
+				
+			}
+			
+			var obj = new clock(context);
+			
+			//毫秒
+			var ms = 00;
+			
+			//秒
+			var s = '00';
+			
+			//分钟
+			var m = '00';
+			
+			var timer = null;
+			
+			//开始
+			function start(){
+				
+				clearInterval(timer);
+				
+				timer  = setInterval(calc,10);
+				
+			}
+			
+			//暂停
+			function pause(){
+				
+				clearInterval(timer);
+				
+			}
+			
+			//归零
+			function zero(){
+				
+				clearInterval(timer);
+				
+				ms = 0;
+			
+				//秒
+				s = '00';
+				
+				//分钟
+				m = '00';
+				
+				obj.init();
+			}
+			
+			function calc(){
+				
+				ms ++;
+				
+				if(ms > 99){
+					
+					s < 9　? s = '0' + (++s) : s++;
+					
+					ms = 0;
+					
+					if(s > 59){
+						
+						m < 9 ? m = '0' + (++m) : m++;
+						
+						s = '00';
+					}
+				}
+				
+				obj.drawTime(m,s,ms);
+				
+			}
+			
+		</script>
+		
+	</body>
+</html>
